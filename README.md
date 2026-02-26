@@ -29,11 +29,14 @@ Built in Python. Managed by git. Designed to be serious infrastructure, not a de
 ```
 aiai/
 ├── CLAUDE.md                          # Agent conventions and safety rules
+├── config/
+│   └── models.yaml                    # OpenRouter model routing tiers
 ├── docs/
 │   ├── vision.md                      # Why this exists
 │   ├── architecture.md                # System design
 │   ├── concepts.md                    # Key concepts
-│   └── research/                      # Background research
+│   ├── founding/                      # Founding documents
+│   └── research/                      # Deep research
 ├── scripts/
 │   ├── git-workflow.sh                # Auto-commit, branch, merge, changelog
 │   └── agent-git.sh                   # Safe git wrapper (secret scanning, guardrails)
@@ -58,15 +61,33 @@ aiai/
 
 ## Documentation
 
+### Core
 - [Vision](docs/vision.md) — Project thesis and direction
 - [Architecture](docs/architecture.md) — System layers, model routing, approval gates
 - [Concepts](docs/concepts.md) — Self-improvement loops, capability bootstrapping, safety model
-- [Research: Agent Frameworks](docs/research/openclaw-and-agent-frameworks.md) — OpenClaw, CrewAI, LangGraph, etc.
-- [Research: Self-Improving AI](docs/research/self-improving-ai.md) — AlphaEvolve, recursive improvement, safety
+
+### Founding Documents
+- [Manifesto](docs/founding/manifesto.md) — The problem, the bet, the standard
+- [Theory of Operation](docs/founding/theory-of-operation.md) — How the system works, from first principles
+- [Engineering Principles](docs/founding/principles.md) — The rules that govern how aiai is built
+- [Safety Model](docs/founding/safety-model.md) — Containment rings, approval gates, enforcement layers
+- [Evolution Engine](docs/founding/evolution-engine.md) — How self-improvement works technically
+- [Model Routing](docs/founding/model-routing.md) — Cost-optimized model selection design
+- [Roadmap](docs/founding/roadmap.md) — Capability levels and concrete deliverables
+
+### Research
+- [Agent Orchestration Patterns](docs/research/agent-orchestration-patterns.md) — Production patterns, protocols (MCP/A2A), benchmarks, frameworks
+- [Model Routing & Cost Optimization](docs/research/model-routing-and-cost.md) — OpenRouter, cascading, caching, real pricing data
+- [Self-Improving AI (Technical)](docs/research/self-improvement-technical.md) — AlphaEvolve internals, prompt evolution, tool creation, evaluation
+- [Self-Improving AI (Overview)](docs/research/self-improving-ai.md) — RSI concepts, safety, current state of the art
+- [Agentic DevOps](docs/research/agentic-devops.md) — AI git workflows, automated review, CI/CD, audit trails
+- [OpenClaw & Agent Frameworks](docs/research/openclaw-and-agent-frameworks.md) — OpenClaw, CrewAI, LangGraph, AutoGen, MetaGPT
 
 ## Status
 
-Foundation phase. Git workflows, CI, docs, and research are in place. Next: Python agent runtime, OpenRouter integration, model routing, self-improvement engine.
+Foundation phase complete. 5,400+ lines of documentation across 13 research and founding documents. Git workflows, CI, and model routing config in place.
+
+**Next**: Build the Python OpenRouter client (`src/router/`), then the agent runtime, then the self-improvement engine. See [Roadmap](docs/founding/roadmap.md) for details.
 
 ## License
 
