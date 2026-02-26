@@ -76,6 +76,12 @@ aiai/
 - [Roadmap](docs/founding/roadmap.md) — Capability levels and concrete deliverables
 
 ### Research
+- [Agent Memory & Knowledge Systems](docs/research/agent-memory-systems.md) — RAG, vector DBs, context management, knowledge graphs, memory safety
+- [Agent Safety & Alignment](docs/research/agent-safety-and-alignment.md) — Sandboxing, capability control, alignment monitoring, red teaming, regulations
+- [AI Infrastructure Landscape 2026](docs/research/ai-infrastructure-landscape-2026.md) — MCP, A2A, Claude Code, Cursor, Codex, E2B, open-source models, agent economy
+- [Python Agent Ecosystem](docs/research/python-agent-ecosystem.md) — Anthropic SDK, OpenAI Agents SDK, PydanticAI, LangGraph, async patterns, testing
+- [Evaluation & Benchmarks](docs/research/evaluation-and-benchmarks.md) — SWE-bench, agent benchmarks, LLM-as-judge, A/B testing, cost-quality Pareto
+- [Multi-Agent Coordination](docs/research/multi-agent-coordination.md) — Debate, consensus, specialization, parallel execution, emergent behavior
 - [Agent Orchestration Patterns](docs/research/agent-orchestration-patterns.md) — Production patterns, protocols (MCP/A2A), benchmarks, frameworks
 - [Model Routing & Cost Optimization](docs/research/model-routing-and-cost.md) — OpenRouter, cascading, caching, real pricing data
 - [Self-Improving AI (Technical)](docs/research/self-improvement-technical.md) — AlphaEvolve internals, prompt evolution, tool creation, evaluation
@@ -85,7 +91,7 @@ aiai/
 
 ## Status
 
-Foundation phase complete. 5,400+ lines of documentation across 13 research and founding documents. Git workflows, CI, and model routing config in place.
+Foundation phase complete. 12,000+ lines of research across 12 topics, plus 7 founding documents. Git workflows, CI, and model routing config in place.
 
 **Next**: Build the Python OpenRouter client (`src/router/`), then the agent runtime, then the self-improvement engine. See [Roadmap](docs/founding/roadmap.md) for details.
 
