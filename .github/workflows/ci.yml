@@ -22,18 +22,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Install Python linters
+      - name: Install linters
         run: pip install ruff mypy
 
-      - name: Ruff lint (Python)
+      - name: Ruff lint
         run: ruff check . || echo "No Python files to lint"
 
-      - name: Mypy type check (Python)
+      - name: Mypy type check
         run: mypy . --ignore-missing-imports || echo "No Python files to type-check"
 
       - name: Shellcheck
@@ -53,29 +48,15 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+      - name: Install test dependencies
+        run: pip install pytest
 
-      - name: Install Python test dependencies
-        run: pip install pytest || true
-
-      - name: Run Python tests
+      - name: Run tests
         run: |
           if [ -d "tests" ] && find tests -name "*.py" | head -1 | grep -q .; then
             pytest tests/ -v
           else
-            echo "No Python tests found -- skipping"
-          fi
-
-      - name: Run Node tests
-        run: |
-          if [ -f "package.json" ]; then
-            npm ci
-            npm test || echo "No Node tests configured"
-          else
-            echo "No package.json -- skipping Node tests"
+            echo "No tests found -- skipping"
           fi
 
   auto-label:
@@ -105,9 +86,10 @@ jobs:
               if (path.startsWith('.github/'))         labels.add('ci');
               if (path.startsWith('tests/'))           labels.add('tests');
               if (path.startsWith('src/'))             labels.add('source');
+              if (path.startsWith('config/'))          labels.add('config');
               if (path.endsWith('.py'))                labels.add('python');
-              if (path.endsWith('.ts') || path.endsWith('.js')) labels.add('javascript');
               if (path.endsWith('.sh'))                labels.add('shell');
+              if (path === 'CLAUDE.md')                labels.add('agent-config');
             }
 
             // Detect AI-authored PRs

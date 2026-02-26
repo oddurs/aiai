@@ -1,0 +1,67 @@
+# aiai Model Routing Configuration
+# Maps task complexity levels to model tiers via OpenRouter.
+# Agents declare complexity; the router picks the cheapest adequate model.
+#
+# APPROVAL-GATED: Changes to this file require human PR approval.
+
+provider: openrouter
+
+# Model tiers, ordered by preference within each tier.
+# Router tries the first available model, falls back down the list.
+tiers:
+  nano:
+    # Trivial tasks: formatting, renaming, simple lookups
+    models:
+      - anthropic/claude-haiku-4-5
+      - google/gemini-2.0-flash-lite
+    max_tokens: 1024
+    temperature: 0.0
+
+  fast:
+    # Simple tasks: single-file edits, straightforward implementations
+    models:
+      - anthropic/claude-sonnet-4
+      - google/gemini-2.0-flash
+      - openai/gpt-4o-mini
+    max_tokens: 4096
+    temperature: 0.0
+
+  balanced:
+    # Medium tasks: multi-file changes, moderate reasoning
+    models:
+      - anthropic/claude-sonnet-4
+      - deepseek/deepseek-r1
+      - openai/gpt-4o
+    max_tokens: 8192
+    temperature: 0.0
+
+  powerful:
+    # Complex tasks: architecture, hard bugs, novel implementations
+    models:
+      - anthropic/claude-opus-4
+      - openai/gpt-4o
+      - deepseek/deepseek-r1
+    max_tokens: 16384
+    temperature: 0.0
+
+  max:
+    # Critical tasks: safety-critical, system-wide changes
+    models:
+      - anthropic/claude-opus-4
+      - openai/o1-pro
+    max_tokens: 32768
+    temperature: 0.0
+
+# Complexity → tier mapping
+routing:
+  trivial: nano
+  simple: fast
+  medium: balanced
+  complex: powerful
+  critical: max
+
+# Cost tracking
+cost:
+  log_file: logs/model-costs.jsonl
+  warn_threshold_usd: 1.00    # Warn if a single request exceeds this
+  daily_budget_usd: 50.00     # Hard limit per day
