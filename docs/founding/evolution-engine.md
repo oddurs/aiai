@@ -205,7 +205,7 @@ git revert [commit hash]
 
 ## Validation
 
-Before a PR is created, the evolution engine validates the change:
+Before committing, the evolution engine validates the change:
 
 ### Automated Checks
 1. **Test suite passes**: All existing tests must still pass
@@ -221,22 +221,19 @@ When possible, the system runs the same task with and without the change:
 
 This isn't always possible (some changes are structural), but when it is, it provides the strongest evidence.
 
-## Gating
+## Quality Control
 
-### Changes that require human approval
-- Any modification to CLAUDE.md
-- Any modification to agent configs
-- Any modification to model routing config
-- Any modification to the evolution engine itself
-- Any change that increases cost bounds
+### No human gates — tests are the only gate
 
-### Changes that can auto-merge (after CI)
-- New tools in `src/tools/`
-- Test improvements
-- Documentation updates
-- Non-config code changes
+All changes, including self-modifications, ship if tests pass:
+- CLAUDE.md modifications — tested by CI
+- Agent config changes — tested by CI
+- Model routing changes — tested by CI
+- Evolution engine changes — tested by CI
+- Tool creation — tested by CI
+- Everything else — tested by CI
 
-Even auto-merge changes go through PRs for auditability. The difference is whether a human must explicitly approve.
+If tests pass, it commits directly to main. If tests fail, the change is fixed or reverted. No PRs, no human review, no waiting.
 
 ## Measuring Outcomes
 

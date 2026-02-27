@@ -1,68 +1,62 @@
 # aiai - Vision
 
-> Self-improving AI infrastructure. Agents build, test, and evolve their own codebase.
+> AI that builds itself. Fully autonomous. No human gates.
 
 ## Core Thesis
 
-The bottleneck in AI-powered development isn't model capability — it's the human iteration loop. Review a PR, merge, wait, repeat. aiai removes that bottleneck for everything except the decisions that actually matter.
+Humans are the bottleneck. Not because they're bad at reviewing code, but because they're slow. The AI writes a function in 3 seconds, then waits 4 hours for someone to look at the PR. Multiply that by every commit, every day, and you've throttled an AI system to human speed.
 
-**aiai** is infrastructure where AI agents autonomously:
+**aiai removes the bottleneck entirely.** No PRs. No human review. No approval gates. Agents write code, run tests, commit, push, merge, and evolve — all at machine speed. Quality is maintained through testing, not through human eyes.
 
-1. **Build** — Write, test, and ship code without waiting for humans
-2. **Improve** — Analyze what worked, modify their own tooling and prompts
-3. **Coordinate** — Form teams, divide work, merge results
-4. **Evolve** — Each cycle produces a more capable version of the system
-
-This isn't a toy or a research demo. It's intended to be reliable infrastructure that compounds in capability over time.
+The system builds itself. That's the whole point.
 
 ## How It Actually Runs
 
-**Claude Code** is the primary execution environment. Agents are Claude Code sessions that use the Task tool for team coordination, Bash for execution, and the standard Claude toolchain for file operations.
+**Claude Code** is the execution environment. Agents are Claude Code sessions that use the Task tool for team coordination, Bash for execution, and the standard Claude toolchain for file operations.
 
-**OpenRouter** provides model access. Instead of being locked to one provider, agents route requests through OpenRouter to pick the best model for each subtask:
-- Expensive, capable models (Opus, GPT-4, DeepSeek-R1) for architecture, complex reasoning, hard bugs
-- Fast, cheap models (Haiku, Flash, small open-source) for routine operations, simple edits, formatting
-- Model selection is automatic and cost-optimized — agents declare task complexity, the router picks the model
+**OpenRouter** provides model access. Agents route requests through OpenRouter to pick the best model for each subtask:
+- Expensive models (Opus, GPT-4, DeepSeek-R1) for architecture, complex reasoning, hard bugs
+- Cheap models (Haiku, Flash) for routine operations, simple edits, formatting
+- Model selection is automatic and cost-optimized
 
-**Python** is the implementation language. One language, one ecosystem, no polyglot overhead. Bash for scripts.
+**Python** is the implementation language. One language, one ecosystem, no polyglot overhead.
+
+**Git** is the state, the memory, and the safety net. Every action is a commit. Every commit is revertable. The git log is the system's autobiography.
 
 ## What Makes aiai Different
 
-Most agent frameworks are orchestration layers that humans configure. aiai is different in two ways:
-
-1. **The framework improves itself.** Agents can modify their own prompts, tools, coordination patterns, and evaluation criteria. The system's git history is its evolution history.
-
-2. **Cost-aware model routing.** Not every task needs the most expensive model. aiai treats model selection as an optimization problem — maximize quality while minimizing cost.
-
-| Traditional Agent Framework | aiai |
+| Every other agent framework | aiai |
 |---|---|
-| Humans design orchestration | Agents design their own orchestration |
-| Fixed tool set | Agents create and improve tools |
-| One model for everything | Cost-optimized routing across models |
-| Improvement requires human PRs | Autonomous within approval gates |
+| Humans configure the agents | Agents configure themselves |
+| Humans review before merge | Tests validate before merge |
+| Humans approve self-modification | Agents self-modify freely |
+| Human speed | Machine speed |
+| Framework is separate from output | Framework IS the output — it builds itself |
 
 ## Autonomy Model
 
-**Autonomous within guardrails.** Agents operate freely for most tasks, with human approval required at specific gates:
+**Full auto. No gates.**
 
-**Agents do freely:**
-- Write code, run tests, commit to feature branches
-- Create and manage branches
-- Coordinate in teams, spawn sub-agents
-- Build new tools and scripts
-- Research, analyze, synthesize
+Agents have complete authority to:
+- Write, test, commit, push, and merge code
+- Modify their own prompts, configs, and instructions
+- Create and delete branches
+- Build new tools and capabilities
+- Refactor or rewrite any part of the system
+- Evolve the system's architecture
 
-**Requires human approval:**
-- Merging PRs to `main`
-- Modifying CLAUDE.md, agent configs, or the self-improvement system
-- Any operation that changes how agents themselves operate
+Quality is maintained by:
+- Comprehensive automated testing
+- CI pipeline that catches regressions
+- Git history that enables rollback
+- Cost tracking that prevents budget blowout
 
-This keeps the system productive while ensuring humans retain control over what actually ships and how agents behave.
+The human's role is to set direction, not to gate execution. You tell aiai what to build. It builds it. You tell it to improve itself. It does.
 
 ## Guiding Principles
 
-1. **Ship working code** — Not prototypes, not demos. Code that runs and does what it says.
-2. **Audit everything** — Every agent action is a git operation. Full traceability.
-3. **Optimize cost** — Use the cheapest model that can do the job well. Expensive models for hard problems only.
-4. **Fail safe** — Agents can't merge to main or modify their own rules without approval.
-5. **Compound** — Every improvement makes the next improvement easier.
+1. **Full auto** — No human gates. Tests are the gatekeeper, not people.
+2. **Build itself** — aiai's first and most important customer is aiai.
+3. **Ship at machine speed** — If tests pass, it ships. No waiting.
+4. **Optimize cost** — Cheapest model that can do the job. Expensive models for hard problems only.
+5. **Compound** — Every improvement makes the next improvement easier and faster.

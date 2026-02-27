@@ -31,18 +31,36 @@
 
 **OpenRouter** is the model layer. A Python client routes requests based on task complexity, falling back through cheaper models when the expensive ones aren't needed.
 
-**Git** is the state layer. All agent work lands as commits. Branches are workspaces. The git log is the audit trail.
+**Git** is the state layer, safety net, and memory. All agent work lands as commits. `git revert` is the undo button. The git log is the full history.
+
+## Operating Mode: Full Auto
+
+No human gates. No PRs. No approval workflows.
+
+```
+Agent writes code → Tests pass? → Commit to main → Push
+                         ↓ no
+                   Fix code → Try again
+```
+
+Quality enforcement is fully automated:
+- **Tests** catch bugs before commit
+- **CI** catches regressions on push
+- **Git revert** undoes bad commits in seconds
+- **Cost tracking** prevents budget blowout
+- **Secret scanning** catches credentials before commit
 
 ## System Layers
 
-### Layer 0: Infrastructure
-What's already built.
+### Layer 0: Infrastructure (done)
 
 - **Git repository** with automated workflows (`scripts/git-workflow.sh`, `scripts/agent-git.sh`)
 - **CI/CD pipeline** (`.github/workflows/ci.yml`)
 - **Project conventions** (`CLAUDE.md`)
+- **Research base** (12 deep research documents, 10K+ lines)
 
 ### Layer 1: Model Router
+
 Python module for cost-optimized model selection via OpenRouter.
 
 - **Task complexity declaration** — Agents tag requests as `trivial`, `simple`, `medium`, `complex`, `critical`
@@ -61,6 +79,7 @@ critical   → most capable       → Opus, o1-pro
 ```
 
 ### Layer 2: Agent Runtime
+
 How agents spawn, coordinate, and persist.
 
 - **Agent spawning** — Claude Code Task tool creates specialized agents
@@ -69,36 +88,14 @@ How agents spawn, coordinate, and persist.
 - **Tool registry** — Python scripts in `src/tools/` that agents can invoke
 
 ### Layer 3: Self-Improvement Engine
-How the system gets better.
+
+How the system gets better, autonomously.
 
 - **Performance tracking** — Log task outcomes, execution time, cost, quality metrics
-- **Prompt evolution** — Agents propose modifications to CLAUDE.md and agent configs
+- **Prompt evolution** — Agents modify CLAUDE.md and agent configs directly
 - **Tool creation** — Agents build new Python tools when existing ones are insufficient
 - **Pattern library** — Successful patterns extracted and stored for reuse
-- **Approval gate** — All self-modifications require human PR approval before merging
-
-## Approval Gates
-
-```
-┌───────────────────────────────────────────┐
-│              Autonomous Zone               │
-│                                           │
-│  Write code, run tests, commit to         │
-│  branches, create tools, coordinate       │
-│  teams, research, analyze                 │
-│                                           │
-├───────────────────────────────────────────┤
-│           Human Approval Required          │
-│                                           │
-│  ✋ Merge PR to main                       │
-│  ✋ Modify CLAUDE.md                       │
-│  ✋ Modify agent configs (.claude/agents/) │
-│  ✋ Modify self-improvement system         │
-│  ✋ Change model routing config            │
-│  ✋ Delete branches or data                │
-│                                           │
-└───────────────────────────────────────────┘
-```
+- **No gates** — Self-modifications commit directly. Tests are the only quality check.
 
 ## Agent Types
 
@@ -106,16 +103,13 @@ How the system gets better.
 Writes code. Implements features, fixes bugs, creates scripts. The workhorse.
 
 ### Researcher
-Investigates problems. Reads docs, searches codebases, synthesizes findings. Informs decisions.
+Investigates problems. Reads docs, searches codebases, synthesizes findings.
 
 ### Architect
-Plans system changes. Decomposes complex tasks, designs interfaces, reviews modifications.
-
-### Reviewer
-Reviews code for quality and safety. Validates changes don't break things. Checks for security issues.
+Plans system changes. Decomposes complex tasks, designs interfaces.
 
 ### Evolver
-Analyzes performance. Proposes improvements to prompts, tools, and workflows. Drives self-improvement.
+Analyzes performance. Modifies prompts, tools, and workflows. Drives self-improvement.
 
 ## Data Flow
 
@@ -123,62 +117,64 @@ Analyzes performance. Proposes improvements to prompts, tools, and workflows. Dr
 Task
   │
   ├─ Simple? ──→ Single agent, cheap model, direct execution
+  │               → Tests pass → Commit to main → Push
   │
   └─ Complex? ─→ Team formation
                    │
                    ├─ Architect decomposes task
                    ├─ Builder(s) implement in parallel
                    ├─ Researcher gathers context as needed
-                   ├─ Reviewer validates output
                    │
-                   └─→ Results committed to branch
+                   └─→ Results committed to main
                         │
-                        └─→ PR created → Human approves → Merge to main
-                                                            │
-                                                            └─→ Evolver analyzes outcome
-                                                                 │
-                                                                 └─→ System improves
+                        └─→ Evolver analyzes outcome
+                             │
+                             └─→ System improves itself
 ```
 
 ## Directory Structure
 
 ```
 aiai/
-├── CLAUDE.md                  # Agent conventions (approval-gated)
+├── CLAUDE.md                  # Agent conventions (agents can modify freely)
 ├── config/
-│   └── models.yaml            # OpenRouter model routing config (approval-gated)
+│   └── models.yaml            # OpenRouter model routing config
 ├── src/
 │   ├── router/                # OpenRouter client + cost-optimized model selection
 │   ├── agents/                # Agent definitions and configs
 │   ├── tools/                 # Python tools agents can invoke
 │   ├── memory/                # Persistent memory system
 │   └── evolution/             # Self-improvement engine
-├── tests/
+├── tests/                     # The real quality gate
 ├── scripts/
 │   ├── git-workflow.sh        # Automated git operations
-│   └── agent-git.sh           # Safe git wrapper for agents
+│   └── agent-git.sh           # Safe git wrapper (secret scan, cost tracking)
 ├── docs/
 ├── .github/
 └── .claude/
-    └── agents/                # Claude Code agent definitions (approval-gated)
+    └── agents/                # Claude Code agent definitions
 ```
 
 ## Key Design Decisions
 
+### Why full auto (no gates)
+- Human review is the bottleneck, not the safety mechanism
+- Tests are faster, more consistent, and more thorough than humans
+- Git revert makes any mistake instantly fixable
+- Self-improvement requires fast iteration — gates slow it down
+- The system can't build itself if it has to wait for humans
+
 ### Why Claude Code as runtime
 - Already handles agent spawning, tool use, file I/O, team coordination
 - No custom runtime to build or maintain
-- Agents get shell access, web access, and the full Claude toolchain
-- Focus effort on the model router and self-improvement engine, not plumbing
+- Focus on the model router and self-improvement engine, not plumbing
 
 ### Why OpenRouter
 - Single API key, access to every major model
 - Cost optimization is a first-class concern
 - Not locked to any one provider
-- Easy to swap models as new ones ship
 
 ### Why Python only
 - One language to reason about, test, and maintain
 - Rich ecosystem for AI/ML tooling
 - Agents understand Python deeply
-- Bash for scripts is fine; no need for TypeScript/Node

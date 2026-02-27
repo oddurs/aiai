@@ -1,28 +1,28 @@
 # aiai
 
-Self-improving AI infrastructure. Agents build, test, and evolve their own codebase.
+AI that builds itself. Fully autonomous. No human gates.
 
 ## What is this?
 
-aiai is a system where AI agents autonomously write code, coordinate in teams, and improve their own tooling and capabilities over time. The primary interface is [Claude Code](https://claude.ai/code), with [OpenRouter](https://openrouter.ai) providing access to any model for cost-optimized task routing.
+aiai is AI-made AI. A system where AI agents write code, test it, commit it, push it, and improve themselves — all without human review or approval. The primary interface is [Claude Code](https://claude.ai/code), with [OpenRouter](https://openrouter.ai) for cost-optimized model routing.
 
-Built in Python. Managed by git. Designed to be serious infrastructure, not a demo.
+Built in Python. Managed by git. Runs at machine speed.
 
 ## How it works
 
 1. You give aiai a task (build something, research something, improve itself)
 2. Agents self-organize into teams, picking the right models for each subtask
-3. Work happens autonomously — code is written, tested, committed to branches
-4. Human approves PRs to `main` and any self-modification changes
+3. Code is written, tested, committed directly to main, and pushed
+4. No PRs, no human review — tests are the quality gate
 5. The system learns from each cycle and gets better at the next one
 
 ## Core principles
 
-- **Cost-optimized model routing** — Cheap models for simple tasks, powerful models for hard ones, via OpenRouter
-- **Autonomous within guardrails** — Agents commit freely to branches; humans approve merges to `main` and changes to agent configs
-- **Everything is auditable** — Git history IS the evolution history
+- **Full auto** — No human gates. Tests are the gatekeeper, not people.
+- **Build itself** — aiai's first customer is aiai. The system constructs and improves itself.
+- **Cost-optimized** — Cheap models for simple tasks, powerful models for hard ones, via OpenRouter
+- **Everything is auditable** — Git history IS the evolution history. Revert anything.
 - **Python only** — One language, no polyglot complexity
-- **Self-improving** — The framework is its own first customer
 
 ## Project structure
 

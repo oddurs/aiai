@@ -24,17 +24,17 @@ Every API call costs money. Every token costs money. The system that ignores cos
 
 A 10x cost reduction with equal quality is as valuable as a 10x quality improvement at equal cost.
 
-## 3. Autonomy Is Earned, Not Given
+## 3. Full Auto From Day One
 
-The system starts with minimal autonomy and earns more by demonstrating reliability.
+No human gates. No gradual autonomy ramp. Agents have full authority from the start.
 
-- **Level 0**: Agents can read and analyze
-- **Level 1**: Agents can write to branches (reversible)
-- **Level 2**: Agents can propose PRs (human-gated)
-- **Level 3**: Low-risk changes can auto-merge after CI
-- **Level 4**: Agents operate largely independently, humans approve at merge gates
+- Agents commit directly to `main`
+- Agents modify any file, including their own instructions
+- Tests are the only quality gate
+- Git revert is the safety net
+- Speed over caution — always
 
-Each level requires the previous level to work reliably. Jumping levels is not allowed.
+The system doesn't earn autonomy. It has it. Quality comes from automated testing, not human review.
 
 ## 4. Simple Until Proven Insufficient
 

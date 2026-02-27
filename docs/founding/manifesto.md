@@ -2,69 +2,65 @@
 
 ## The Problem
 
-Software is written by humans, one keystroke at a time. AI can draft code faster than any human, but the system around it — review, merge, deploy, evaluate, iterate — still runs at human speed. The AI writes a function in 3 seconds, then waits 4 hours for someone to look at the PR.
+Software development runs at human speed. AI can write code in seconds, but the system around it — review, approve, merge, deploy, evaluate, iterate — is gated by humans at every step. An AI agent writes a function, then sits idle while someone finds time to look at the PR.
 
-This isn't an AI capability problem. It's a systems design problem.
-
-The tools exist. The models exist. What's missing is the connective tissue: a system where AI agents don't just generate code on request, but *operate* — autonomously building, testing, committing, evaluating, and improving with minimal human friction.
+This is absurd. We have AI capable enough to write production code, but we still make it wait in line like it's submitting a form at the DMV.
 
 ## The Bet
 
-aiai bets on three things:
+aiai bets on one thing: **removing humans from the loop makes the system faster, not worse.**
 
-### 1. Autonomy within structure beats supervised generation
+### Why no gates?
 
-A human reviewing every AI output is a bottleneck that scales linearly with the human's time. A system where AI operates freely within guardrails — committing to branches, running tests, spawning teams — and humans only intervene at merge points, scales with compute.
+The argument for human review is "what if the AI makes a mistake?" But the argument against human review is stronger:
 
-The key insight: most of what AI does doesn't need human review. File reads, test runs, branch management, research synthesis, tool creation — these are safe operations. Only the final integration into the mainline codebase needs a human eye. Gate what matters, automate everything else.
+1. **Tests catch mistakes faster than humans.** A test suite runs in seconds. A human review takes hours or days. And tests don't get tired, distracted, or skip things because it's Friday afternoon.
 
-### 2. Cost optimization is a design constraint, not an afterthought
+2. **Git makes everything reversible.** If something breaks, revert the commit. The cost of a bad commit that gets reverted is minutes. The cost of waiting for human review on every commit is days.
 
-Running Opus for every API call is like using a freight truck to deliver a letter. Most tasks are simple. A rename, a test run, a status check. These should use the cheapest model that won't mess them up.
+3. **Human gates don't scale.** If the system produces 100 changes per day, a human can't review them all meaningfully. You either slow the system down to human speed or rubber-stamp reviews. Neither is useful.
 
-The system that treats model selection as an optimization problem — maximize quality, minimize cost — will outcompete the system that uses one model for everything. This is true whether you're a solo developer watching your API bill or a company processing millions of agent requests.
+4. **Self-improvement requires speed.** A system that improves itself needs fast iteration cycles. Observe → analyze → modify → test → integrate, as fast as possible. Every human gate adds latency to that loop.
 
-### 3. Self-improvement is the only durable advantage
+The right answer: **ship fast, test everything, revert if broken.**
 
-Every other advantage is temporary. A better prompt gets copied. A better tool gets open-sourced. A better model gets released by a competitor. But a system that improves itself — that gets better at getting better — compounds in a way that's hard to replicate.
+### Cost optimization is still a design constraint
 
-This doesn't require AGI or recursive superintelligence. It requires mundane, practical self-improvement: an agent that notices its test suite is slow and rewrites it. An agent that finds a better prompt and proposes the change. An agent that builds a tool because the existing ones don't cover the use case. Small improvements, continuously, adding up.
+Running Opus for every API call is wasteful. Most tasks are simple. aiai treats model selection as an optimization problem — maximize quality while minimizing cost via OpenRouter.
+
+### Self-improvement is the only durable advantage
+
+A system that improves itself — that gets better at getting better — compounds. Better prompts, better tools, faster execution, lower cost. Small improvements, continuously, adding up. That's aiai.
 
 ## The Architecture
 
-aiai is built on three pillars:
+**Git as the backbone.** Every agent action is a git commit. Branches are workspaces. The git log is the system's memory, audit trail, and evolution history. If something breaks, revert. Git is the safety net, not human review.
 
-**Git as the backbone.** Every agent action is a git operation. Branches are workspaces. Commits are atomic units of work. PRs are approval gates. The git log is the system's memory, its audit trail, and its evolution history. This isn't metaphorical — it's literal. The system's capability at any point in time is the state of its repository.
+**Cost-optimized model routing.** Agents declare task complexity. A router picks the cheapest adequate model via OpenRouter. Haiku for trivial tasks, Sonnet for moderate ones, Opus for hard problems. Cost is tracked per task, per agent, per model.
 
-**Cost-optimized model routing.** Agents declare task complexity. A router picks the cheapest adequate model via OpenRouter. Haiku for trivial tasks, Sonnet for moderate ones, Opus for hard problems. The system tracks spend per task, per agent, per model. There's a daily budget. There are per-request warnings. Cost is a first-class concern.
+**Unrestricted self-improvement.** Agents can modify ANY part of the system — code, tools, prompts, configs, this manifesto, everything. Quality is maintained through automated testing, not through human approval. If a change breaks tests, it gets reverted. If it passes tests, it ships.
 
-**Gated self-improvement.** Agents can modify any part of the system — code, tools, prompts, workflows — but changes to how agents themselves operate (CLAUDE.md, agent configs, model routing, the evolution engine) require human approval via PR. This means the system improves freely within its operating envelope, but humans control the shape of that envelope.
+## What aiai Is
+
+**A system that builds itself.** Give it a goal, and it assembles agents, writes code, tests it, commits it, and moves on. No waiting. No asking permission.
+
+**Infrastructure, not a demo.** Code must work. Tests must pass. CI must be green. But these are automated checks, not human checkpoints.
+
+**An experiment in full autonomy.** What happens when you remove ALL human gates and let AI operate at machine speed? That's what we're finding out.
 
 ## What aiai Is Not
 
-**Not a chatbot.** aiai isn't a thing you talk to. It's a thing that works. It receives tasks, assembles teams, produces output, and improves.
+**Not cautious.** Other frameworks add gates at every step. aiai adds tests at every step. Different philosophy, same goal (quality), faster execution.
 
-**Not a research project.** The goal isn't to publish papers about self-improving AI. It's to build infrastructure that actually works and gets better over time. Research informs the design, but shipping is the priority.
+**Not locked to one model.** OpenRouter gives access to every major model. Agents use whatever model is best for the task.
 
-**Not an AGI attempt.** Self-improvement here means practical optimization: better prompts, better tools, faster execution, lower cost. Not recursive superintelligence. The system operates within defined boundaries and improves within those boundaries.
-
-**Not locked to one model.** The whole point of OpenRouter integration is model independence. Agents use whatever model is best for the task. When a better model ships, it slots into the routing config. No rewrite required.
+**Not waiting for permission.** If tests pass, it ships.
 
 ## The Standard
 
-aiai holds itself to an infrastructure standard, not a demo standard:
-
-- Code that ships must work. Tests must pass. CI must be green.
-- Every change is traceable to a commit, an agent, a task.
+- Tests are the gatekeeper. No tests = no confidence = no ship.
+- Every change is a commit with context. The git log explains everything.
 - Cost is tracked and bounded. No runaway API bills.
-- Safety gates cannot be bypassed by agents.
-- The system must be able to explain why it made any change (git log, PR descriptions, commit messages).
-- Rollback is always possible. No irreversible damage without human approval.
-
-## The Invitation
-
-This is a public project. The code is open. The research is documented. The evolution is visible in the git history.
-
-If you're building with AI agents, thinking about self-improving systems, or just curious about what happens when you let AI operate with real autonomy inside real guardrails — this is the place.
-
-The system is early. The foundation is laid. What gets built next depends on what works.
+- Rollback is always one `git revert` away.
+- The system explains why it made every change (commit messages).
+- Speed over caution. Ship and fix is better than review and wait.
