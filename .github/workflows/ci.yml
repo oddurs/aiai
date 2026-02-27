@@ -17,19 +17,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install linters
-        run: pip install ruff mypy
+      - name: Install workspace
+        run: uv sync
 
       - name: Ruff lint
-        run: ruff check . || echo "No Python files to lint"
+        run: uv run ruff check .
 
       - name: Mypy type check
-        run: mypy . --ignore-missing-imports || echo "No Python files to type-check"
+        run: uv run mypy packages/ --ignore-missing-imports
 
       - name: Shellcheck
         run: |
@@ -43,21 +46,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install test dependencies
-        run: pip install pytest
+      - name: Install workspace
+        run: uv sync
 
       - name: Run tests
-        run: |
-          if [ -d "tests" ] && find tests -name "*.py" | head -1 | grep -q .; then
-            pytest tests/ -v
-          else
-            echo "No tests found -- skipping"
-          fi
+        run: uv run pytest tests/ -v
 
   auto-label:
     name: Auto-label PR
@@ -85,7 +86,7 @@ jobs:
               if (path.startsWith('scripts/'))        labels.add('tooling');
               if (path.startsWith('.github/'))         labels.add('ci');
               if (path.startsWith('tests/'))           labels.add('tests');
-              if (path.startsWith('src/'))             labels.add('source');
+              if (path.startsWith('packages/'))        labels.add('source');
               if (path.startsWith('config/'))          labels.add('config');
               if (path.endsWith('.py'))                labels.add('python');
               if (path.endsWith('.sh'))                labels.add('shell');

@@ -1,0 +1,32 @@
+# aiai Evolution Engine Configuration
+# Controls the self-improvement cycle.
+
+enabled: false  # Enable when metrics pipeline is ready
+
+# Hypothesis generation
+max_hypotheses_per_day: 3
+hypothesis_budget_usd: 5.0
+max_active_branches: 1
+
+# Metrics analysis
+metrics_window_days: 7
+min_improvement_threshold: 0.05  # 5% improvement required to keep a change
+
+# Safety
+auto_revert_on_regression: true
+checkpoint_tag_prefix: "pre-evolution"
+
+# Pattern detection
+patterns:
+  - name: cost_spike
+    description: "Detect sudden cost increases"
+    threshold: 2.0  # 2x normal cost
+  - name: latency_degradation
+    description: "Detect latency regression"
+    threshold: 1.5  # 1.5x normal latency
+  - name: error_rate_increase
+    description: "Detect rising error rates"
+    threshold: 0.10  # 10% error rate
+  - name: token_waste
+    description: "Detect unnecessarily high token usage"
+    threshold: 1.5  # 1.5x expected tokens for complexity

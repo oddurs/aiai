@@ -1,0 +1,26 @@
+# aiai Safety Configuration
+# Controls circuit breakers, protected files, evolution limits, and quality gates.
+
+protected_files:
+  - CLAUDE.md
+  - config/safety.yaml
+  - config/models.yaml
+  - config/evolution.yaml
+  - packages/safety/src/aiai_safety/invariants.py
+
+circuit_breaker:
+  max_failures_per_task: 5
+  max_cost_per_task_usd: 5.0
+  max_retries_per_task: 3
+  max_tasks_per_hour: 100
+
+evolution:
+  max_hypotheses_per_day: 3
+  max_active_branches: 1
+  hypothesis_budget_usd: 5.0
+
+quality:
+  regression_threshold: 0.10   # >10% degradation triggers revert
+  regression_window_days: 7
+  min_test_coverage: 0.80
+  monotonic_test_count: true   # passing test count can never decrease

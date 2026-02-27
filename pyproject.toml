@@ -1,0 +1,49 @@
+[project]
+name = "aiai"
+version = "0.1.0"
+description = "AI-made AI: self-improving autonomous AI system"
+requires-python = ">=3.11"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=1.0",
+    "ruff>=0.9",
+    "mypy>=1.14",
+    "types-PyYAML>=6.0",
+    "aiai-core",
+    "aiai-router",
+    "aiai-safety",
+    "aiai-metrics",
+    "aiai-evolution",
+    "aiai-dashboard",
+]
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+aiai-core = { workspace = true }
+aiai-router = { workspace = true }
+aiai-safety = { workspace = true }
+aiai-metrics = { workspace = true }
+aiai-evolution = { workspace = true }
+aiai-dashboard = { workspace = true }
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM", "TCH"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

@@ -58,6 +58,14 @@ wandb/
 mlruns/
 *.log
 
+# DuckDB
+*.duckdb
+*.duckdb.wal
+
+# Logs
+logs/*.jsonl
+logs/*.log
+
 # Testing & Coverage
 .coverage
 htmlcov/
