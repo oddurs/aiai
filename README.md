@@ -63,14 +63,14 @@ aiai/
 
 ### Core
 - [Vision](docs/vision.md) — Project thesis and direction
-- [Architecture](docs/architecture.md) — System layers, model routing, approval gates
+- [Architecture](docs/architecture.md) — System layers, model routing, full-auto operation
 - [Concepts](docs/concepts.md) — Self-improvement loops, capability bootstrapping, safety model
 
 ### Founding Documents
 - [Manifesto](docs/founding/manifesto.md) — The problem, the bet, the standard
 - [Theory of Operation](docs/founding/theory-of-operation.md) — How the system works, from first principles
 - [Engineering Principles](docs/founding/principles.md) — The rules that govern how aiai is built
-- [Safety Model](docs/founding/safety-model.md) — Containment rings, approval gates, enforcement layers
+- [Safety Model](docs/founding/safety-model.md) — Testing as safety, git revert, cost controls, observability
 - [Evolution Engine](docs/founding/evolution-engine.md) — How self-improvement works technically
 - [Model Routing](docs/founding/model-routing.md) — Cost-optimized model selection design
 - [Roadmap](docs/founding/roadmap.md) — Capability levels and concrete deliverables
@@ -88,10 +88,13 @@ aiai/
 - [Self-Improving AI (Overview)](docs/research/self-improving-ai.md) — RSI concepts, safety, current state of the art
 - [Agentic DevOps](docs/research/agentic-devops.md) — AI git workflows, automated review, CI/CD, audit trails
 - [OpenClaw & Agent Frameworks](docs/research/openclaw-and-agent-frameworks.md) — OpenClaw, CrewAI, LangGraph, AutoGen, MetaGPT
+- [AI Building AI](docs/research/ai-building-ai.md) — AI writing AI code, AutoML, NAS, bootstrapping, acceleration thesis, self-replicating AI
+- [Fully Autonomous Systems](docs/research/fully-autonomous-systems.md) — Zero-intervention architectures, auto-merge, self-healing, runaway prevention, trust through verification
+- [Autonomous Software Development](docs/research/autonomous-software-development.md) — AI-generated production code, full-stack agents, autonomous bug fixing, software factories
 
 ## Status
 
-Foundation phase complete. 12,000+ lines of research across 12 topics, plus 7 founding documents. Git workflows, CI, and model routing config in place.
+Foundation phase complete. 15,000+ lines of research across 15 topics, plus 7 founding documents. Git workflows, CI, and model routing config in place. All docs updated to full-auto mode (no human gates).
 
 **Next**: Build the Python OpenRouter client (`src/router/`), then the agent runtime, then the self-improvement engine. See [Roadmap](docs/founding/roadmap.md) for details.
 
